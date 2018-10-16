@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+
+@import './constants';
+@import './button';
+@import './form';
+@import './icons';
+@import './table';
+@import './card';
+@import './modal';
+@import './loader';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background-color: #fff;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.container-top{
+  justify-content: normal;
+  padding: 3rem;
+}
+
+.center {
+  border: solid 1px #eff3f9;
+  display: flex;
+  flex-direction: column;
+  padding: 3em;
+  border-radius: 0.25rem;
+  overflow: auto;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.center-login {
+  background: rgba(216, 217, 224, 0.4);
+  width: 35%;
+  padding-bottom: 1rem;
+}
+
+.main {
+  display: flex;
+  flex-grow: 1;
+}
+
+.item-output {
+  border: 1px solid #c8ccd1;
+  border-radius: 0.5vh;
+}
+
+.navigation {
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    background: $main-color;
+    margin: 0;
+    color: #fff;
+    padding: 0.9rem;
+
+    &.horizontal {
+      flex-direction: row;
+    }
+
+    li {
+      padding: 10px 20px;
+      font-weight: 300;
+
+      &:hover {
+        cursor: pointer;
+        color: $alt-color;
+      }
+
+      &.highlighted {
+        cursor: pointer;
+        color: $alt-color;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.nav-brand {
+  font-size: 1.15rem;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  width: 15%;
+  min-width: 10rem;
+  background: $main-color;
+}
+
+.name {
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  margin: 0.6rem 0;
+  padding: 0.2rem;
+  font-weight: 500;
+  min-height: 2rem;
+  color: $alt-color;
+}
+
+.report {
+  color: $main-color;
+  padding: 1rem;
+  width: 40rem;
+}
+
+.report-title {
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: left;
+  border-bottom: 1px solid;
+  padding: 1rem 0;
+
+  & span {
+    padding-left: 1rem;
+  }
+}
+
+.report-item-label {
+  margin: 1em 0;
+  width: 50%;
+  padding: 1rem 0;
+
+  & span {
+    font-weight: 300;
+  }
+}
+
+.report-item {
+  font-weight: 300;
+  padding-left: 2em;
+  padding-right: 1em;
+}
+
+.report-content {
+  padding: 1em;
+  padding-right: 2em;
+  position: relative;
+  font-weight: 300;
+  border: 1px solid $report-color;
+  width: 100%;
+}
+
+.report-dates {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.report-date {
+  display: flex;
+  overflow: hidden;
+  font-weight: 400;
+  margin: 1rem 0;
+
+  & span {
+    padding: 0.5em;
+  }
+
+  :first-child {
+    background-color: $alt-color;
+    color: #fff;
+    height: 100%;
+    font-weight: 300;
+  }
+}
+
+.inner-shadow {
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+
+.textarea {
+  padding: 1em;
+  resize: none;
+  width: 100%;
+  height: 30vh;
+  font-size: 0.8rem;
+  border-radius: 0.2rem;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(#a7a5a5,0.25);
+  }
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  height: 1.5rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: #a7a5a5;
+  box-shadow: 0 0 0 0.1rem rgba(#a7a5a5,0.25);
+
+  .form__error & {
+    border-color: #f79483;
+    box-shadow: 0 0 0 0.2rem rgba(#f79483,0.25);
+  }
+}
+
+.filter-input {
+  margin-bottom: 2rem;
+}
+
+.warning {
+  color: #b30909;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .2s
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0
+}
+
+.sport {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: $main-color;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #ddd;
+}
+
+.league {
+  background-color: $main-color;
+  color: #ddd;
+  padding-left: 1rem;
+}

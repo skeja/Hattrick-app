@@ -1,0 +1,35 @@
+.form {
+  width: 30vw;
+  min-width: 30%;
+}
+
+.form__group {
+  margin-bottom: 2rem;
+}
+
+.form__label {
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  margin-left: 0.8rem;
+  display: block;
+}
+
+.form__input {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 2rem;
+  min-height: 2rem;
+  position: relative;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  background: #fff;
+  padding: 0 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form__error {
+  display: block;
+  color: #f57f6c;
+  border-color: #f79483;
+}

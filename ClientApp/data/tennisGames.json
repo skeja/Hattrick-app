@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Pavic - Klein",
+    "1": 1.45,
+    "2": 2.40,
+    "leagueId": 12
+  },
+  {
+    "id": 2,
+    "name": "Rodinov - Ignatik",
+    "1": 1.65,
+    "2": 2.20,
+    "leagueId": 12
+  },
+  {
+    "id": 3,
+    "name": "Rosol - Gakhov",
+    "1": 1.15,
+    "2": 4.7,
+    "leagueId": 12
+  },
+  {
+    "id": 4,
+    "name": "Hepbert - Dokovic",
+    "1": 2.90,
+    "2": 1.10,
+    "leagueId": 12
+  }
+]

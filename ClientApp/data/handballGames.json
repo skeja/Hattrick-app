@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Montpellier - Veszprem",
+    "1": 2.15,
+    "x": 7.50,
+    "2": 1.95,
+    "leagueId": 11
+  },
+  {
+    "id": 2,
+    "name": "Kielce - Vardar",
+    "1": 1.55,
+    "x": 9.00,
+    "2": 2.85,
+    "leagueId": 11
+  },
+  {
+    "id": 3,
+    "name": "Besiktas- B. SIlkeborg",
+    "1": 5.10,
+    "x": 13.00,
+    "2": 1.20,
+    "leagueId": 11
+  },
+  {
+    "id": 4,
+    "name": "Tatran Presov - Sporting",
+    "1": 1.70,
+    "x": 9.00,
+    "2": 2.45,
+    "leagueId": 11
+  },
+  {
+    "id": 5,
+    "name": "Zaporozhye - PPD Zagreb",
+    "1": 1.50,
+    "x": 10,
+    "2": 2.90,
+    "leagueId": 11
+  }
+]

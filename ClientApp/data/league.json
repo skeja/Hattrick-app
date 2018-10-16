@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "name": "England 1.",
+    "sportId": 1
+  },
+  {
+    "id": 2,
+    "name": "France 1.",
+    "sportId": 1
+  },
+  {
+    "id": 3,
+    "name": "Spain 1.",
+    "sportId": 1
+  },
+  {
+    "id": 4,
+    "name": "German 1.",
+    "sportId": 1
+  },
+  {
+    "id": 5,
+    "name": "Croatia 1.",
+    "sportId": 1
+  },
+
+  {
+    "id": 6,
+    "name": "Adriatic league",
+    "sportId": 2
+  },
+  {
+    "id": 7,
+    "name": "Turkey 1.",
+    "sportId": 2
+  },
+  {
+    "id": 8,
+    "name": "Spain 1.",
+    "sportId": 2
+  },
+  {
+    "id": 9,
+    "name": "German 1.",
+    "sportId": 2
+  },
+  {
+    "id": 10,
+    "name": "Italy 1.",
+    "sportId": 2
+  },
+
+  {
+    "id": 11,
+    "name": "Champions League",
+    "sportId": 3
+  },
+
+  {
+    "id": 12,
+    "name": "US Open",
+    "sportId": 4
+  },
+
+  {
+    "id": 13,
+    "name": "NHL",
+    "sportId": 5
+  },
+  {
+    "id": 14,
+    "name": "AHL",
+    "sportId": 5
+  }
+]

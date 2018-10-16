@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Arsenal - Leicester",
+    "1": 1.50,
+    "x": 4.30,
+    "2": 6.00,
+    "leagueId": 1
+  },
+  {
+    "id": 2,
+    "name": "Cardif - Fulham",
+    "1": 2.35,
+    "x": 3.20,
+    "2": 3.00,
+    "leagueId": 1
+  },
+  {
+    "id": 3,
+    "name": "Burnemouth - Southampton",
+    "1": 2.15,
+    "x": 3.20,
+    "2": 3.40,
+    "leagueId": 1
+  },
+  {
+    "id": 4,
+    "name": "Lyon - O. Nimes",
+    "1": 1.35,
+    "x": 4.80,
+    "2": 8.00,
+    "leagueId": 2
+  },
+  {
+    "id": 5,
+    "name": "Strasbourg - Monaco",
+    "1": 2.50,
+    "x": 3.20,
+    "2": 2.80,
+    "leagueId": 2
+  },
+  {
+    "id": 6,
+    "name": "Ream Madrid - Levante",
+    "1": 1.15,
+    "x": 7.00,
+    "2": 17.00,
+    "leagueId": 3
+  },
+  {
+    "id": 7,
+    "name": "Eibar - Ath. Bilbao",
+    "1": 2.75,
+    "x": 3.00,
+    "2": 2.65,
+    "leagueId": 3
+  },
+  {
+    "id": 8,
+    "name": "R Sociedat - Girona",
+    "1": 1.70,
+    "x": 3.50,
+    "2": 5.00,
+    "leagueId": 3
+  },
+  {
+    "id": 9,
+    "name": "Wolfsburg - Bayern",
+    "1": 8.30,
+    "x": 4.80,
+    "2": 1.35,
+    "leagueId": 4
+  },
+  {
+    "id": 10,
+    "name": "Stuttgart - B. Dortmund",
+    "1": 4.10,
+    "x": 3.50,
+    "2": 1.85,
+    "leagueId": 4
+  },
+  {
+    "id": 11,
+    "name": "B Mgladbach - Mainz",
+    "1": 1.65,
+    "x": 3.80,
+    "2": 4.90,
+    "leagueId": 4
+  },
+  {
+    "id": 12,
+    "name": "Inter zapresic - Rijeka",
+    "1": 4.50,
+    "x": 3.40,
+    "2": 1.80,
+    "leagueId": 5
+  },
+  {
+    "id": 13,
+    "name": "Istra 1961 - D. Zagreb",
+    "1": 12.00,
+    "x": 5.30,
+    "2": 1.25,
+    "leagueId": 5
+  },
+  {
+    "id": 14,
+    "name": "Sl. Belupo - HNK Gorica",
+    "1": 2.30,
+    "x": 3.20,
+    "2": 3.10,
+    "leagueId": 5
+  },
+  {
+    "id": 15,
+    "name": "Lokomotiva - Hajduk",
+    "1": 2.60,
+    "x": 3.20,
+    "2": 2.70,
+    "leagueId": 5
+  }
+]

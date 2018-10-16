@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Crvena Zvezda - Krka",
+    "1": 1.05,
+    "x": 19,
+    "2": 9.50,
+    "leagueId": 6
+  },
+  {
+    "id": 2,
+    "name": "Cedevita - Mega Bemax",
+    "1": 1.60,
+    "x": 17,
+    "2": 4.60,
+    "leagueId": 6
+  },
+  {
+    "id": 3,
+    "name": "Giessen - Eisbaren B.",
+    "1": 1.45,
+    "x": 16,
+    "2": 2.80,
+    "leagueId": 9
+  },
+  {
+    "id": 4,
+    "name": "Bonn  Beyreuth",
+    "1": 1.45,
+    "x": 16,
+    "2": 2.80,
+    "leagueId": 9
+  },
+  {
+    "id": 5,
+    "name": "Unicaja - Gran Canaria",
+    "1": 1.40,
+    "x": 16,
+    "2": 3.00,
+    "leagueId": 8
+  },
+  {
+    "id": 6,
+    "name": "Bahcesehir Koleji - Galatasaray",
+    "1": 2.30,
+    "x": 14,
+    "2": 1.65,
+    "leagueId": 7
+  },
+  {
+    "id": 7,
+    "name": "Bologna - Milano",
+    "1": 2.65,
+    "x": 15,
+    "2": 1.50,
+    "leagueId": 10
+  }
+]

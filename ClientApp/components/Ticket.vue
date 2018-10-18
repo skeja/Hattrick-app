@@ -31,6 +31,7 @@
         </span>
         <input v-model="stake" type="text" class="input">
         <button class="button" @click="placeBet">Place bet</button>
+        <span>Odd: {{ odd }}</span>
       </div>
       </template>
     </div>
@@ -50,15 +51,20 @@ export default {
   computed: {
     ticket() {
       return this.$store.getters.getTicket;
+    },
+    odd() {
+      // return this.$store.getters.getOdd;
+      const ticket = this.$store.getters.getTicket;
+      let odd = 0;
+      ticket.games.forEach(e => {
+        odd += e.game[e.type];
+      });
+      return Math.floor(odd);
     }
   },
   methods: {
     placeBet() {
-      const bet = {
-        ticket: this.ticket,
-        stake: this.stake
-      };
-      this.$store.dispatch('placeBet', bet);
+      this.$store.dispatch('placeBet', { ticket: this.ticket, stake: this.stake });
     },
     remove(id) {
       this.$store.dispatch('removeFromTicket', id);

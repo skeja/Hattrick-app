@@ -52,7 +52,6 @@ namespace hattrick_full.Services
         {
             var entity = _context.Ticket_Games
             .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
-            // .Where(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
             entity.GameId = game.GameId;
             _context.SaveChanges();
         }
@@ -61,6 +60,8 @@ namespace hattrick_full.Services
         {
             var entity = _context.Tickets.FirstOrDefault(item => item.Id == ticket.Id);
             // update ticket
+            entity.IsBetted = ticket.IsBetted;
+            _context.SaveChanges();
             return 1;
         }
     }

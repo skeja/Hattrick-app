@@ -22,7 +22,6 @@ const store = new Vuex.Store({
     funds: 0,
     offer: [],
     ticket: {},
-    ticketId: null,
     tickets: []
   },
   getters: {
@@ -35,9 +34,6 @@ const store = new Vuex.Store({
     getTicket(state) {
       return state.ticket;
     },
-    getTicketId(state) {
-      return state.ticketId;
-    },
     getTickets(state) {
       return state.tickets;
     }
@@ -49,14 +45,20 @@ const store = new Vuex.Store({
           state.funds = data.funds;
         });
     },
-    placeBet(state, bet) {
-      console.log(state.funds -= bet.ticket);
+    finishTicket(state, bet) {
       if ((state.funds -= bet) < 0) {
         return 'Funds low!!';
       }
-      // state.tickets.push(bet);
-      // state.funds -= bet;
-      // add ticket to db
+      // update ticket in db
+      const ticket = {
+        id: bet.ticket.id,
+        isBetted: true
+      };
+      return axios.put('/api/ticket/updateTicket', ticket)
+        .then(response => {
+          state.ticket = [];
+          console.log(response.data);
+        });
     },
     resetTicket(state) {
       state.ticket = [];
@@ -116,9 +118,9 @@ const store = new Vuex.Store({
     findOrCreateTicket({ commit }) {
       commit('findOrCreate');
     },
-    placeBet({ commit }, ticket) {
-      commit('placeBet', ticket);
-      commit('resetTicket');
+    placeBet({ commit }, bet) {
+      commit('finishTicket', bet);
+      // commit('resetTicket');
     },
     getOffer({ commit }, sport) {
       // get offer from db

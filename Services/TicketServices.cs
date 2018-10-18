@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using hattrick_full.Models;
 using hattrick_full.Providers;
@@ -24,12 +25,12 @@ namespace hattrick_full.Services
             return 1;
         }
 
-        public Ticket_Game GetById(int id)
+        public List<Ticket_Game> GetByTicketId(int TicketId)
         {
             return _context.Ticket_Games
-                .Find(id);
-            // .Include(tg => tg.TicketId == id);
-            // .FirstOrDefault(ticket_game => ticket_game.TicketId == id);
+            .Include(tg => tg.Game)
+            .Where(tg => tg.TicketId == TicketId)
+            .ToList();
         }
         public Ticket GetLast()
         {

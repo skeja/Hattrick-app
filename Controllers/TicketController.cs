@@ -16,7 +16,7 @@ namespace hattrick_full.Controllers
         [HttpGet("[action]")]
         public IActionResult Find([FromQuery(Name = "id")] int id)
         {
-            var result = ticketProvider.GetById(id);
+            var result = ticketProvider.GetByTicketId(id);
             return Ok(result);
         }
 

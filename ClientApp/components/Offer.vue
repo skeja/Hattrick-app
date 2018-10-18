@@ -56,7 +56,6 @@ export default {
         data = groupBy(o, e => e.league.sport.name);
         sortedOffer.push(data);
       });
-
       sortedOffer.forEach(o => {
         forEach(o, (value, key) => {
           o[key] = groupBy(o[key], item => {
@@ -76,7 +75,7 @@ export default {
     },
     addGame(data, bet) {
       const pair = {
-        ticketId: this.$store.getters.getTicketId,
+        ticketId: this.$store.getters.getTicket.id,
         gameId: data.id,
         type: bet
       };

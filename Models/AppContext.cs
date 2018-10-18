@@ -2,7 +2,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using hattrick_full.Models;
 
-namespace hattrick_full.Models {
+namespace hattrick_full.Models
+{
     public class AppContext : DbContext
     {
         public AppContext(DbContextOptions<AppContext> options) : base(options) { }
@@ -16,6 +17,23 @@ namespace hattrick_full.Models {
 
        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Ticket_Game>()
+                .HasKey(tg => new { tg.TicketId, tg.GameId });
+
+            modelBuilder.Entity<Ticket_Game>()
+                .HasOne(tg => tg.Ticket)
+                .WithMany(t => t.Ticket_Games)
+                .HasForeignKey(tg => tg.TicketId);
+
+            modelBuilder.Entity<Ticket_Game>()
+                .HasOne(tg => tg.Game)
+                .WithMany(g => g.Ticket_Games)
+                .HasForeignKey(tg => tg.GameId);
+
+            modelBuilder.Entity<Ticket>()
+                .Property(ticket => ticket.Id)
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Wallet>().HasData(
                 new Wallet() { Id = 1, Funds = 100 }
             );
@@ -45,7 +63,8 @@ namespace hattrick_full.Models {
             );
             modelBuilder.Entity<Bonus>().HasData(
                 new Bonus() { Id = 1, Extra = 5 },
-                new Bonus() { Id = 2, Extra = 10 }
+                new Bonus() { Id = 2, Extra = 10 },
+                new Bonus() { Id = 3, Extra = 0 }
             );
             modelBuilder.Entity<Game>().HasData(
                 new Game() { Id = 1, Name = "Arsenal - Leicester", Home = 1.50m, Draw = 4.30m, Guest = 6.00m, LeagueId = 1 },

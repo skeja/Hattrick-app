@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace hattrick_full.Models {
     public class Game {
         public int Id { get; set; }
@@ -8,5 +10,6 @@ namespace hattrick_full.Models {
 
         public int LeagueId { get; set; }
         public League League { get; set; }
+        public List<Ticket_Game> Ticket_Games { get; set; }
     }
 }

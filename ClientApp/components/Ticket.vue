@@ -13,12 +13,12 @@
           <th></th>
         </thead>
         <tbody>
-          <tr v-for="( game, index ) in ticket" :key="index">
-            <td>{{ game.name }}</td>
+          <tr v-for="( game, index ) in ticket.games" :key="index">
+            <td>{{ game.game.name }}</td>
             <td>{{ game.type }}</td>
-            <td>{{ game.odd }}</td>
+            <td>{{ game.game[game.type] }}</td>
             <span
-              @click="remove(game.id)"
+              @click="remove(game)"
               class="material-icons md-24 main-color hover">
               delete
             </span>
@@ -57,7 +57,7 @@ export default {
       const bet = {
         ticket: this.ticket,
         stake: this.stake
-      }
+      };
       this.$store.dispatch('placeBet', bet);
     },
     remove(id) {

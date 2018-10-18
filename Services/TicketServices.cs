@@ -39,5 +39,29 @@ namespace hattrick_full.Services
             return _context.Tickets
                 .LastOrDefault(ticket => ticket.IsBetted == false);
         }
+
+        public void RemoveGame(Ticket_Game game)
+        {
+            var entity = _context.Ticket_Games
+            .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
+
+            _context.Ticket_Games.Remove(entity);
+        }
+
+        public void UpdateGame(Ticket_Game game)
+        {
+            var entity = _context.Ticket_Games
+            .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
+            // .Where(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
+            entity.GameId = game.GameId;
+            _context.SaveChanges();
+        }
+
+        public int UpdateTicket(Ticket ticket)
+        {
+            var entity = _context.Tickets.FirstOrDefault(item => item.Id == ticket.Id);
+            // update ticket
+            return 1;
+        }
     }
 }

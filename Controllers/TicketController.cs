@@ -1,3 +1,4 @@
+using System;
 using hattrick_full.Models;
 using hattrick_full.Providers;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace hattrick_full.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult Find([FromQuery(Name = "id")] int id)
+        public IActionResult Find([FromQuery]int id)
         {
             var result = ticketProvider.GetByTicketId(id);
             return Ok(result);
@@ -41,5 +42,25 @@ namespace hattrick_full.Controllers
             return Ok();
         }
 
+        [HttpDelete("[action]")]
+        public IActionResult DeleteGame([FromBody]Ticket_Game game)
+        {
+            ticketProvider.UpdateGame(game);
+            return Ok();
+        }
+
+        [HttpPut("[action]")]
+        public IActionResult UpdateGame([FromBody]Ticket_Game game)
+        {
+            ticketProvider.UpdateGame(game);
+            return Ok();
+        }
+
+        [HttpPut("[action]")]
+        public IActionResult UpdateTicket([FromBody]Ticket ticket)
+        {
+            ticketProvider.UpdateTicket(ticket);
+            return Ok();
+        }
     }
 }

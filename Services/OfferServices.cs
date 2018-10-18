@@ -16,7 +16,9 @@ namespace hattrick_full.Services
         }
         public IEnumerable<Game> GetOffer()
         {
-            return _context.Games.Include(game => game.League);
+            return _context.Games
+                .Include(game => game.League)
+                .ThenInclude(league => league.Sport );
         }
     }
 }

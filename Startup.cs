@@ -28,7 +28,7 @@ namespace hattrick_full
             // Add framework services.
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddTransient<Providers.IOfferProvider, Services.OfferService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

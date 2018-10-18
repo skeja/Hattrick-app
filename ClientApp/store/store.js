@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
+import axios from 'axios';
+
 import basketball from '../data/basketballGames.json';
 import football from '../data/footballGames.json';
 import handball from '../data/handballGames.json';
@@ -13,12 +15,12 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   plugins: [createPersistedState({
     reducer: (persistedState => {
-      const stateFilter = Object.assign({}, persistedState)
-      const blackList = ['offer']
+      const stateFilter = Object.assign({}, persistedState);
+      const blackList = ['offer'];
       blackList.forEach(item => {
-        delete stateFilter[item]
-      })
-      return stateFilter
+        delete stateFilter[item];
+      });
+      return stateFilter;
     })
   })],
   state: {
@@ -44,16 +46,19 @@ const store = new Vuex.Store({
   },
   mutations: {
     placeBet(state, bet) {
-      console.log(state.funds -= bet.ticket)
-      if ((state.funds -= bet) < 0 ) {
-        return 'Funds low!!'
+      console.log(state.funds -= bet.ticket);
+      if ((state.funds -= bet) < 0) {
+        return 'Funds low!!';
       }
       // state.tickets.push(bet);
       // state.funds -= bet;
       // add ticket to db
     },
     resetTicket(state) {
-      state.ticket = []
+      state.ticket = [];
+    },
+    addOffer(state, offer) {
+      state.offer.push(offer);
     },
     getFootball(state, payload) {
       state.offer.push(football);
@@ -72,31 +77,30 @@ const store = new Vuex.Store({
     },
     addGameToTicket(state, bet) {
       const indexOnTicket = state.ticket.findIndex(e => e.id === bet.id);
-      if ( indexOnTicket === -1) {
+      if (indexOnTicket === -1) {
         state.ticket.push(bet);
       } else {
         state.ticket[indexOnTicket] = bet;
       }
-
     },
     removeGameFromTicket(state, id) {
-
-
     }
   },
   actions: {
     placeBet({ commit }, ticket) {
-      commit('placeBet', ticket)
+      commit('placeBet', ticket);
       commit('resetTicket');
     },
     getOffer({ commit }, sport) {
       // get offer from db
-      commit('getFootball');
+      axios.get('/api/offer/index')
+        .then(response => commit('addOffer', response.data));
+      // commit('getFootball');
       // provjerit koji je sport
     },
     addToTicket({ commit }, bet) {
-      console.log(bet)
-      commit('addGameToTicket', bet)
+      console.log(bet);
+      commit('addGameToTicket', bet);
     },
     removeFromTicket({ commit }, id) {
       commit('removeGameFromTicket', id);

@@ -50,10 +50,12 @@ export default {
     offer() {
       const offer = this.$store.getters.getOffer;
       const filteredOffer = [];
+      groupBy(offer, o => o.league.sport.name);s
       offer.forEach(sport => {
         filteredOffer.push(groupBy(sport, 'leagueId'));
+        debugger;
       });
-      return filteredOffer
+      return filteredOffer;
     }
   },
   created() {

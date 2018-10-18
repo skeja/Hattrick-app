@@ -1,0 +1,45 @@
+using hattrick_full.Models;
+using hattrick_full.Providers;
+using Microsoft.AspNetCore.Mvc;
+
+namespace hattrick_full.Controllers
+{
+    [Route("api/[controller]")]
+    public class TicketController : Controller
+    {
+        private readonly ITicketProvider ticketProvider;
+        public TicketController(ITicketProvider ticketProvider)
+        {
+            this.ticketProvider = ticketProvider;
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult Find([FromQuery(Name = "id")] int id)
+        {
+            var result = ticketProvider.GetById(id);
+            return Ok(result);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult Last()
+        {
+            var ticket = ticketProvider.GetLast();
+            return Ok(ticket);
+        }
+
+        [HttpPost("[action]")]
+        public IActionResult Create([FromBody]Ticket newTicket)
+        {
+            ticketProvider.Add(newTicket);
+            return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public IActionResult Add([FromBody]Ticket_Game newGame)
+        {
+            ticketProvider.AddGame(newGame);
+            return Ok();
+        }
+
+    }
+}

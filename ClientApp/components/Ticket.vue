@@ -44,6 +44,9 @@ export default {
       stake: 5
     };
   },
+  created() {
+    this.$store.dispatch('findOrCreateTicket');
+  },
   computed: {
     ticket() {
       return this.$store.getters.getTicket;

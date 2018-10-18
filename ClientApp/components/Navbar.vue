@@ -38,6 +38,9 @@ export default {
     return {
     };
   },
+  created() {
+    return this.$store.commit('getFunds');
+  },
   computed: {
     funds() {
       return this.$store.getters.getFunds;

@@ -21,7 +21,7 @@ const store = new Vuex.Store({
     // get funds from base
     funds: 0,
     offer: [],
-    ticket: [],
+    ticket: {},
     ticketId: null,
     tickets: []
   },
@@ -43,6 +43,12 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
+    getFunds(state) {
+      return axios.get('/api/wallet/index')
+        .then(({ data }) => {
+          state.funds = data.funds;
+        });
+    },
     placeBet(state, bet) {
       console.log(state.funds -= bet.ticket);
       if ((state.funds -= bet) < 0) {
@@ -59,25 +65,39 @@ const store = new Vuex.Store({
       state.offer.push(offer);
     },
     addGameToTicket(state, bet) {
-      console.log(bet);
-      return axios.post('/api/ticket/add', bet)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(err => console.log(err));
+      const indexOnTicket = state.ticket.games.findIndex(e => e.gameId === bet.gameId);
+      debugger;
+      if (indexOnTicket === -1) {
+        return axios.post('/api/ticket/add', bet)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(err => console.log(err));
+      } else {
+        // update par na ticket_game
+        return axios.put('/api/ticket/update', bet)
+          .then(res => {
+            console.log(res.data);
+            debugger;
+          });
+      }
     },
-    removeGameFromTicket(state, id) {
+    removeGameFromTicket(state, game) {
+      console.log(game);
+      return axios.delete('/api/icket/deleteGame', game)
+        .then(response => {
+          console.log(response);
+          debugger;
+        });
     },
     findOrCreate(state, payload) {
       axios.get('/api/ticket/last')
         .then(({ data }) => {
-          debugger;
-          state.ticketId = data.id;
+          state.ticket.id = data.id;
           if (data !== '') {
             return axios.get(`/api/ticket/find?Id=${data.id}`)
               .then((res) => {
-                debugger;
-                state.ticket = res.data;
+                state.ticket.games = res.data;
               })
               .catch(err => console.log(err));
           }
@@ -109,8 +129,8 @@ const store = new Vuex.Store({
       console.log(bet);
       commit('addGameToTicket', bet);
     },
-    removeFromTicket({ commit }, id) {
-      commit('removeGameFromTicket', id);
+    removeFromTicket({ commit }, game) {
+      commit('removeGameFromTicket', game);
     }
   }
 });

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using hattrick_full.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace hattrick_full
 {
@@ -27,9 +29,20 @@ namespace hattrick_full
 
             // Add framework services.
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options => {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+            //     .AddJsonOptions(options =>
+            // {
+            //     options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            //     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            //     options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            // });
             services.AddTransient<Providers.IOfferProvider, Services.OfferService>();
             services.AddTransient<Providers.ITicketProvider, Services.TicketService>();
+            services.AddTransient<Providers.IWalletProvider, Services.WalletService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -75,17 +75,11 @@ export default {
       this.$router.push({ name: 'ticket' });
     },
     addGame(data, bet) {
-      console.log(data);
-
-      const game = JSON.parse(JSON.stringify(data));
-
       const pair = {
-        id: game.id,
-        name: game.name,
-        type: bet,
-        odd: game[bet]
+        ticketId: this.$store.getters.getTicketId,
+        gameId: data.id,
+        type: bet
       };
-      console.log(pair);
       this.$store.dispatch('addToTicket', pair);
     }
   }

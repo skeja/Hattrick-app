@@ -21,7 +21,8 @@ const store = new Vuex.Store({
     // get funds from base
     funds: 0,
     offer: [],
-    ticket: {},
+    ticket: [],
+    ticketId: null,
     tickets: []
   },
   getters: {
@@ -33,6 +34,9 @@ const store = new Vuex.Store({
     },
     getTicket(state) {
       return state.ticket;
+    },
+    getTicketId(state) {
+      return state.ticketId;
     },
     getTickets(state) {
       return state.tickets;
@@ -55,24 +59,25 @@ const store = new Vuex.Store({
       state.offer.push(offer);
     },
     addGameToTicket(state, bet) {
-      const indexOnTicket = state.ticket.findIndex(e => e.id === bet.id);
-      if (indexOnTicket === -1) {
-        state.ticket.push(bet);
-      } else {
-        state.ticket[indexOnTicket] = bet;
-      }
+      console.log(bet);
+      return axios.post('/api/ticket/add', bet)
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(err => console.log(err));
     },
     removeGameFromTicket(state, id) {
     },
     findOrCreate(state, payload) {
       axios.get('/api/ticket/last')
         .then(({ data }) => {
+          debugger;
+          state.ticketId = data.id;
           if (data !== '') {
-            debugger;
-            return axios.get(`/api/ticket/find?id=${data.id}`)
+            return axios.get(`/api/ticket/find?Id=${data.id}`)
               .then((res) => {
                 debugger;
-                this.ticket = res.data;
+                state.ticket = res.data;
               })
               .catch(err => console.log(err));
           }
@@ -99,12 +104,10 @@ const store = new Vuex.Store({
       // get offer from db
       axios.get('/api/offer/index')
         .then(response => commit('addOffer', response.data));
-      // commit('getFootball');
-      // provjerit koji je sport
     },
     addToTicket({ commit }, bet) {
       console.log(bet);
-      // commit('addGameToTicket', bet);
+      commit('addGameToTicket', bet);
     },
     removeFromTicket({ commit }, id) {
       commit('removeGameFromTicket', id);

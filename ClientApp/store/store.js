@@ -77,7 +77,7 @@ const store = new Vuex.Store({
           .catch(err => console.log(err));
       } else {
         // update par na ticket_game
-        return axios.put('/api/ticket/update', bet)
+        return axios.put('/api/ticket/updateGame', bet)
           .then(res => {
             console.log(res.data);
             debugger;
@@ -87,7 +87,7 @@ const store = new Vuex.Store({
     removeGameFromTicket(state, game) {
       console.log(game);
       debugger;
-      return axios.delete(`/api/ticket/delete/${game}`)
+      return axios.delete(`/api/ticket/delete/${game.TicketId}/${game.GameId}`)
         .then(response => {
           console.log(response);
           debugger;
@@ -134,7 +134,16 @@ const store = new Vuex.Store({
       commit('addGameToTicket', bet);
     },
     removeFromTicket({ commit }, game) {
-      commit('removeGameFromTicket', game);
+      // commit('removeGameFromTicket', game);
+      console.log(game);
+      debugger;
+      return axios.delete(`/api/ticket/delete/${game.TicketId}/${game.GameId}`)
+        .then(response => {
+          console.log(response);
+          debugger;
+          commit('findOrCreate');
+        })
+        .catch(err => console.log(err));
     }
   }
 });

@@ -44,13 +44,16 @@ namespace hattrick_full.Services
                 .LastOrDefault(ticket => ticket.IsBetted == false);
         }
 
-        public void RemoveGame(Ticket_Game game)
+        public void RemoveGame(int TicketId, int GameId)
         {
             var entity = _context.Ticket_Games
-            .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
+            .Include(tg => tg.Game)
+            .Include(tg => tg.Ticket)
+            .FirstOrDefault(tg => tg.TicketId == TicketId && tg.GameId == GameId);
 
             if (entity != null) {
                 _context.Ticket_Games.Remove(entity);
+                _context.SaveChanges();
             }
         }
 
@@ -58,7 +61,10 @@ namespace hattrick_full.Services
         {
             var entity = _context.Ticket_Games
             .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
-            entity.Type = game.Type;
+
+            if (entity != null) {
+                entity.Type = game.Type;
+            }
             _context.SaveChanges();
             UpdateTicket(new Ticket{ Id = entity.TicketId });
         }

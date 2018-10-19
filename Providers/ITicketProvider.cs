@@ -11,6 +11,6 @@ namespace hattrick_full.Providers
         int UpdateTicket(Ticket ticket);
         int AddGame(Ticket_Game newGame);
         void UpdateGame(Ticket_Game game);
-        void RemoveGame(Ticket_Game game);
+        void RemoveGame(int TicketId, int GameId);
     }
 }

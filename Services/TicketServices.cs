@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using hattrick_full.Models;
@@ -8,11 +9,12 @@ namespace hattrick_full.Services
 {
     public class TicketService : ITicketProvider
     {
-        private AppContext _context;
-        public TicketService(AppContext context)
+        private Models.AppContext _context;
+        public TicketService(Models.AppContext context)
         {
             _context = context;
         }
+        private int _defaultBonusId = 3;
 
         public int Add(Ticket newTicket)
         {
@@ -25,6 +27,7 @@ namespace hattrick_full.Services
         {
             _context.Ticket_Games.Add(newGame);
             _context.SaveChanges();
+            UpdateTicket(new Ticket{ Id = newGame.TicketId });
             return 1;
         }
 
@@ -57,6 +60,7 @@ namespace hattrick_full.Services
             .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
             entity.Type = game.Type;
             _context.SaveChanges();
+            UpdateTicket(new Ticket{ Id = entity.TicketId });
         }
 
         public int UpdateTicket(Ticket ticket)
@@ -64,6 +68,7 @@ namespace hattrick_full.Services
             var entity = _context.Tickets.FirstOrDefault(item => item.Id == ticket.Id);
             // update ticket
             entity.IsBetted = ticket.IsBetted;
+            entity.BonusId = GetBonusId(entity.Id);
             _context.SaveChanges();
             return 1;
         }
@@ -81,6 +86,29 @@ namespace hattrick_full.Services
 		    .Where(tg => tg.TicketId == ticketId)
 		    .GroupBy(tg => tg.Game.League.SportId)
 		    .Count();
-}
+        }
+
+        public int CountAllSports() {
+        	return _context.Sports.Count();
+        }
+        private bool isBonusTen(int ticketId) {
+            return SportsCount(ticketId) == CountAllSports();
+        }
+        public int GetBonusId(int tickedId) {
+            Dictionary<int,Func<int,bool>> map = _priorityMap();
+	        for(int i = 0; i < map.Count; i++) {
+		    if (map.ElementAt(i).Value.Invoke(tickedId)) return map.ElementAt(i).Key;
+	        }
+	        return _defaultBonusId;
+        }
+        private bool isBonusFive(int tickedId) {
+            return HasGamesFromSameSport(tickedId, 3);
+        }
+        private Dictionary<int,Func<int,bool>> _priorityMap () {
+            return new Dictionary<int,Func<int,bool>> {
+                { 2, this.isBonusTen },
+                { 1, this.isBonusFive }
+            };
+        }
     }
 }

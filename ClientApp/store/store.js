@@ -40,7 +40,6 @@ const store = new Vuex.Store({
         });
     },
     finishTicket(state, bet) {
-      debugger;
       if ((state.funds -= bet) < 0) {
         return 'Funds low!!';
       }
@@ -110,6 +109,7 @@ const store = new Vuex.Store({
       commit('findOrCreate');
     },
     updateFunds(dispatch, funds) {
+      debugger;
       return axios.put('/api/wallet/updateFunds', funds)
         .then(response => {
           debugger;
@@ -118,7 +118,6 @@ const store = new Vuex.Store({
     placeBet({ dispatch, commit, getters }, bet) {
       // commit('finishTicket', bet);
       let funds = getters.getFunds;
-      debugger;
       if ((funds -= bet) < 0) {
         return 'Funds low!!';
       }
@@ -129,11 +128,14 @@ const store = new Vuex.Store({
         odd: bet.odd,
         isBetted: true
       };
+      debugger;
       return axios.put('/api/ticket/updateTicket', ticket)
         .then(response => {
           commit('resetTicket');
           commit('findOrCreate');
-          dispatch('updateFunds', bet.funds);
+          debugger;
+          dispatch('updateFunds', bet.stake);
+          debugger;
         });
     },
     getBonus(dispatch, ticketId) {

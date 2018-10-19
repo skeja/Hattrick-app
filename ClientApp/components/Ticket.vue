@@ -62,7 +62,6 @@ export default {
         odd += e.game[e.type];
       });
       odd += this.bonus;
-      debugger;
       return Math.floor(odd);
     }
   },

@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using hattrick_full.Models;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace hattrick_full
 {
@@ -19,12 +23,26 @@ namespace hattrick_full
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var connectionString = Configuration.GetConnectionString("AppContext");
+            services.AddEntityFrameworkNpgsql().AddDbContext<AppContext>(options => options.UseNpgsql(connectionString));
+
             // Add framework services.
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            // Simple example with dependency injection for a data provider.
-            services.AddSingleton<Providers.IWeatherProvider, Providers.WeatherProviderFake>();
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options => {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+            //     .AddJsonOptions(options =>
+            // {
+            //     options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            //     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            //     options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            // });
+            services.AddTransient<Providers.IOfferProvider, Services.OfferService>();
+            services.AddTransient<Providers.ITicketProvider, Services.TicketService>();
+            services.AddTransient<Providers.IWalletProvider, Services.WalletService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

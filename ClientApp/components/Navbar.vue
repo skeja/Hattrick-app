@@ -21,12 +21,6 @@
         <li>
           Funds: {{ funds }}
         </li>
-        <router-link
-          :to="{ name: 'wallet' }"
-          tag="li"
-          active-class="highlighted">
-          Wallet
-        </router-link>
       </div>
     </ul>
   </nav>
@@ -37,6 +31,9 @@ export default {
   data() {
     return {
     };
+  },
+  created() {
+    return this.$store.commit('getFunds');
   },
   computed: {
     funds() {

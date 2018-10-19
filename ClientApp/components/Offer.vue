@@ -1,7 +1,7 @@
 <template>
   <div class="container container-top">
     <div class="center">
-      <table v-for="(sport, index) in offer" :key="index" class="table">
+      <table v-for="(sport, index) in offer[0]" :key="index" class="table">
         <div class="sport">
           {{ index }}
         </div>
@@ -18,9 +18,9 @@
           <tbody>
             <tr v-for="(game, index) in league" :key="index">
               <td>{{ game.name }}</td>
-              <td @click="addGame(game, '1')">{{ game[1] }}</td>
-              <td @click="addGame(game, 'x')">{{ game.x }}</td>
-              <td @click="addGame(game, '2')">{{ game[2] }}</td>
+              <td @click="addGame(game, 'home')">{{ game.home }}</td>
+              <td @click="addGame(game, 'draw')">{{ game.draw }}</td>
+              <td @click="addGame(game, 'guest')">{{ game.guest }}</td>
             </tr>
           </tbody>
         </table>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { groupBy } from 'lodash-es';
+import { groupBy, forEach } from 'lodash-es';
 import Ticket from './Ticket.vue';
 
 export default {
@@ -49,11 +49,21 @@ export default {
   computed: {
     offer() {
       const offer = this.$store.getters.getOffer;
-      const filteredOffer = [];
-      offer.forEach(sport => {
-        filteredOffer.push(groupBy(sport, 'leagueId'));
+      const sortedOffer = [];
+
+      offer.map(o => {
+        let data = [];
+        data = groupBy(o, e => e.league.sport.name);
+        sortedOffer.push(data);
       });
-      return filteredOffer
+      sortedOffer.forEach(o => {
+        forEach(o, (value, key) => {
+          o[key] = groupBy(o[key], item => {
+            return item.league.name;
+          });
+        });
+      });
+      return sortedOffer;
     }
   },
   created() {
@@ -64,15 +74,11 @@ export default {
       this.$router.push({ name: 'ticket' });
     },
     addGame(data, bet) {
-      const game = JSON.parse(JSON.stringify(data));
-
       const pair = {
-        id: game.id,
-        name: game.name,
-        type: bet,
-        odd: game[bet]
-      }
-      console.log(pair);
+        TicketId: this.$store.getters.getTicket.id,
+        GameId: data.id,
+        Type: bet
+      };
       this.$store.dispatch('addToTicket', pair);
     }
   }

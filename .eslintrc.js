@@ -40,7 +40,7 @@ module.exports = {
          'max': 3,
          'allowFirstLine': true
        }
-     }]
+     }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
   }

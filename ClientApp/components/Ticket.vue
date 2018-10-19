@@ -13,12 +13,12 @@
           <th></th>
         </thead>
         <tbody>
-          <tr v-for="( game, index ) in ticket" :key="index">
-            <td>{{ game.name }}</td>
+          <tr v-for="( game, index ) in ticket.games" :key="index">
+            <td>{{ game.game.name }}</td>
             <td>{{ game.type }}</td>
-            <td>{{ game.odd }}</td>
+            <td>{{ game.game[game.type] }}</td>
             <span
-              @click="remove(game.id)"
+              @click="remove(game)"
               class="material-icons md-24 main-color hover">
               delete
             </span>
@@ -31,6 +31,7 @@
         </span>
         <input v-model="stake" type="text" class="input">
         <button class="button" @click="placeBet">Place bet</button>
+        <span>Odd: {{ odd }}</span>
       </div>
       </template>
     </div>
@@ -44,29 +45,40 @@ export default {
       stake: 5
     };
   },
+  created() {
+    this.$store.dispatch('findOrCreateTicket');
+  },
   computed: {
     ticket() {
       return this.$store.getters.getTicket;
+    },
+    bonus() {
+      return this.$store.getters.getBonus
+    },
+    odd() {
+      const ticket = this.$store.getters.getTicket;
+      this.$store.dispatch('getBonus', ticket.id);
+      // const bonus = this.$store.getters.getBonus;
+      let odd = 0;
+      ticket.games.forEach(e => {
+        odd += e.game[e.type];
+      });
+      odd += this.bonus;
+      return Math.floor(odd);
     }
   },
   methods: {
     placeBet() {
-      const bet = {
-        ticket: this.ticket,
-        stake: this.stake
-      }
-      this.$store.dispatch('placeBet', bet);
+      this.$store.dispatch('placeBet', { ticket: this.ticket, stake: this.stake, odd: this.odd });
     },
-    remove(id) {
-      this.$store.dispatch('removeFromTicket', id);
+    remove(game) {
+      const ticket = {
+        TicketId: game.ticketId,
+        GameId: game.gameId,
+        Type: game.type
+      };
+      this.$store.dispatch('removeFromTicket', ticket);
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.ticket-bet {
-
-}
-</style>
-

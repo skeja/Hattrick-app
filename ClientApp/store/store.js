@@ -1,36 +1,23 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
-
-import basketball from '../data/basketballGames.json';
-import football from '../data/footballGames.json';
-import handball from '../data/handballGames.json';
-import hockey from '../data/hockeyGames.json';
-import tennis from '../data/tennisGames.json';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  plugins: [createPersistedState({
-    reducer: (persistedState => {
-      const stateFilter = Object.assign({}, persistedState)
-      const blackList = ['offer']
-      blackList.forEach(item => {
-        delete stateFilter[item]
-      })
-      return stateFilter
-    })
-  })],
   state: {
-    // get funds from base
     funds: 0,
     offer: [],
-    ticket: [],
-    tickets: []
+    ticket: {},
+    tickets: [],
+    bonus: 0
   },
   getters: {
     getFunds(state) {
       return state.funds;
+    },
+    getBonus(state) {
+      return state.bonus;
     },
     getOffer(state) {
       return state.offer;
@@ -43,63 +30,153 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    placeBet(state, bet) {
-      console.log(state.funds -= bet.ticket)
-      if ((state.funds -= bet) < 0 ) {
-        return 'Funds low!!'
+    setBonus(state, bonus) {
+      state.bonus = bonus;
+    },
+    getFunds(state) {
+      return axios.get('/api/wallet/index')
+        .then(({ data }) => {
+          state.funds = data.funds;
+        });
+    },
+    finishTicket(state, bet) {
+      if ((state.funds -= bet) < 0) {
+        return 'Funds low!!';
       }
-      // state.tickets.push(bet);
-      // state.funds -= bet;
-      // add ticket to db
+      // update ticket in db
+      const ticket = {
+        id: bet.ticket.id,
+        isBetted: true
+      };
+      return axios.put('/api/ticket/updateTicket', ticket)
+        .then(response => {
+          state.ticket = [];
+          console.log(response.data);
+        });
+    },
+    addOffer(state, offer) {
+      state.offer.push(offer);
+    },
+    addBetted(state, tickets) {
+      state.tickets = tickets;
     },
     resetTicket(state) {
-      state.ticket = []
-    },
-    getFootball(state, payload) {
-      state.offer.push(football);
-    },
-    getBasketball(state, payload) {
-      state.offer.push(basketball);
-    },
-    getHandball(state, payload) {
-      state.offer.push(handball);
-    },
-    getTennis(state, payload) {
-      state.offer.push(tennis);
-    },
-    getHockey(state, payload) {
-      state.offer.push(hockey);
+      state.ticket = [];
     },
     addGameToTicket(state, bet) {
-      const indexOnTicket = state.ticket.findIndex(e => e.id === bet.id);
-      if ( indexOnTicket === -1) {
-        state.ticket.push(bet);
+      const indexOnTicket = state.ticket.games.findIndex(e => e.gameId === bet.GameId);
+      if (indexOnTicket === -1) {
+        return axios.post('/api/ticket/add', bet)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(err => console.log(err));
       } else {
-        state.ticket[indexOnTicket] = bet;
+        // update par na ticket_game
+        return axios.put('/api/ticket/updateGame', bet)
+          .then(res => {
+            console.log(res.data);
+          });
       }
-
     },
-    removeGameFromTicket(state, id) {
-
-
+    removeGameFromTicket(state, game) {
+      return axios.delete(`/api/ticket/delete/${game.TicketId}/${game.GameId}`)
+        .then(response => {
+        })
+        .catch(err => console.log(err));
+    },
+    findOrCreate(state, payload) {
+      axios.get('/api/ticket/last')
+        .then(({ data }) => {
+          state.ticket.id = data.id;
+          if (data !== '') {
+            return axios.get(`/api/ticket/find?Id=${data.id}`)
+              .then((res) => {
+                state.ticket.games = res.data;
+              })
+              .catch(err => console.log(err));
+          }
+          const ticket = {
+            isBetted: false,
+            bonusId: 3
+          };
+          axios.post('/api/ticket/create', ticket)
+            .then(response => {
+              console.log(response);
+            });
+        });
     }
   },
   actions: {
-    placeBet({ commit }, ticket) {
-      commit('placeBet', ticket)
-      commit('resetTicket');
+    findOrCreateTicket({ commit }) {
+      commit('findOrCreate');
+    },
+    updateFunds({ commit }, funds) {
+      return axios.put('/api/wallet/updateFunds', funds)
+        .then(response => {
+          commit('getFunds');
+        })
+        .catch(err => console.log(err));
+    },
+    placeBet({ dispatch, commit, getters }, bet) {
+      // commit('finishTicket', bet);
+      let funds = getters.getFunds;
+      if ((funds -= bet) < 0) {
+        return 'Funds low!!';
+      }
+      // update ticket in db
+      const ticket = {
+        id: bet.ticket.id,
+        stake: bet.stake,
+        odd: bet.odd,
+        isBetted: true
+      };
+      return axios.put('/api/ticket/updateTicket', ticket)
+        .then(response => {
+          commit('resetTicket');
+          commit('findOrCreate');
+          dispatch('updateFunds', bet.stake);
+        });
+    },
+    getBonus({ commit }, ticketId) {
+      return axios.get(`/api/ticket/getBonus?TicketId=${ticketId}`)
+        .then(response => {
+          commit('setBonus', response.data);
+        });
     },
     getOffer({ commit }, sport) {
       // get offer from db
-      commit('getFootball');
-      // provjerit koji je sport
+      axios.get('/api/offer/index')
+        .then(response => commit('addOffer', response.data));
     },
-    addToTicket({ commit }, bet) {
-      console.log(bet)
-      commit('addGameToTicket', bet)
+    getBetted({ commit }) {
+      return axios.get('/api/ticket/getBetted')
+        .then(response => commit('addBetted', response.data));
     },
-    removeFromTicket({ commit }, id) {
-      commit('removeGameFromTicket', id);
+    addToTicket({ commit, getters }, bet) {
+      const ticket = getters.getTicket;
+      const indexOnTicket = ticket.games.findIndex(e => e.gameId === bet.GameId);
+      if (indexOnTicket === -1) {
+        return axios.post('/api/ticket/add', bet)
+          .then(response => {
+            commit('findOrCreate');
+          })
+          .catch(err => console.log(err));
+      } else {
+        // update par na ticket_game
+        return axios.put('/api/ticket/updateGame', bet)
+          .then(res => {
+            commit('findOrCreate');
+          });
+      }
+    },
+    removeFromTicket({ dispatch, commit }, game) {
+      return axios.delete(`/api/ticket/delete/${game.TicketId}/${game.GameId}`)
+        .then(response => {
+          commit('findOrCreate');
+          dispatch('getBonus', game.TicketId);
+        })
+        .catch(err => console.log(err));
     }
   }
 });

@@ -42,8 +42,7 @@
 export default {
   data() {
     return {
-      stake: 5,
-      bonus: this.$store.getters.getBonus
+      stake: 5
     };
   },
   created() {
@@ -52,6 +51,9 @@ export default {
   computed: {
     ticket() {
       return this.$store.getters.getTicket;
+    },
+    bonus() {
+      return this.$store.getters.getBonus
     },
     odd() {
       const ticket = this.$store.getters.getTicket;

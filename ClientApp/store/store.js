@@ -108,12 +108,13 @@ const store = new Vuex.Store({
     findOrCreateTicket({ commit }) {
       commit('findOrCreate');
     },
-    updateFunds(dispatch, funds) {
+    updateFunds({ commit }, funds) {
       debugger;
       return axios.put('/api/wallet/updateFunds', funds)
         .then(response => {
-          debugger;
-        });
+          commit('getFunds');
+        })
+        .catch(err => console.log(err));
     },
     placeBet({ dispatch, commit, getters }, bet) {
       // commit('finishTicket', bet);
@@ -138,10 +139,11 @@ const store = new Vuex.Store({
           debugger;
         });
     },
-    getBonus(dispatch, ticketId) {
+    getBonus({ commit }, ticketId) {
       return axios.get(`/api/ticket/getBonus?TicketId=${ticketId}`)
         .then(response => {
-          console.log(response.data);
+          debugger;
+          commit('setBonus', response.data);
           return response.data;
         });
     },

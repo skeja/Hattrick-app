@@ -42,10 +42,10 @@ namespace hattrick_full.Controllers
             return Ok();
         }
 
-        [HttpDelete("[action]")]
-        public IActionResult Delete(Ticket_Game game)
+        [HttpDelete("[action]/{deleteGame}")]
+        public IActionResult Delete(Ticket_Game deleteGame)
         {
-            ticketProvider.RemoveGame(game);
+            ticketProvider.RemoveGame(deleteGame);
             return Ok();
         }
 

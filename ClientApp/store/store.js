@@ -87,7 +87,7 @@ const store = new Vuex.Store({
     removeGameFromTicket(state, game) {
       console.log(game);
       debugger;
-      return axios.delete('/api/ticket/delete', game)
+      return axios.delete(`/api/ticket/delete/${game}`)
         .then(response => {
           console.log(response);
           debugger;

@@ -72,7 +72,6 @@ namespace hattrick_full.Services
         public int UpdateTicket(Ticket ticket)
         {
             var entity = _context.Tickets.FirstOrDefault(item => item.Id == ticket.Id);
-            // update ticket
             entity.IsBetted = ticket.IsBetted;
             entity.Stake = ticket.Stake;
             entity.Odd = ticket.Odd;
@@ -117,6 +116,18 @@ namespace hattrick_full.Services
                 { 2, this.isBonusTen },
                 { 1, this.isBonusFive }
             };
+        }
+        public int GetBonus(int TicketId)
+        {
+            var ticket = _context.Tickets
+                .Include(t => t.Bonus)
+                .FirstOrDefault(t => t.Id == TicketId);
+
+            if (ticket != null) {
+                return ticket.Bonus.Extra;
+            }
+
+            return 0;
         }
     }
 }

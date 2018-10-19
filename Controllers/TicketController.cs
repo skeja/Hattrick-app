@@ -62,5 +62,12 @@ namespace hattrick_full.Controllers
             ticketProvider.UpdateTicket(ticket);
             return Ok();
         }
+
+        [HttpGet("[action]")]
+        public IActionResult GetBonus([FromQuery]int TicketId)
+        {
+            var result = ticketProvider.GetBonus(TicketId);
+            return Ok(result);
+        }
     }
 }

@@ -42,7 +42,8 @@
 export default {
   data() {
     return {
-      stake: 5
+      stake: 5,
+      bonus: this.$store.getters.getBonus
     };
   },
   created() {
@@ -54,10 +55,14 @@ export default {
     },
     odd() {
       const ticket = this.$store.getters.getTicket;
+      this.$store.dispatch('getBonus', ticket.id);
+      // const bonus = this.$store.getters.getBonus;
       let odd = 0;
       ticket.games.forEach(e => {
         odd += e.game[e.type];
       });
+      odd += this.bonus;
+      debugger;
       return Math.floor(odd);
     }
   },

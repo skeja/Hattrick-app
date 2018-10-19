@@ -9,11 +9,15 @@ const store = new Vuex.Store({
     funds: 0,
     offer: [],
     ticket: {},
-    tickets: []
+    tickets: [],
+    bonus: 0
   },
   getters: {
     getFunds(state) {
       return state.funds;
+    },
+    getBonus(state) {
+      return state.bonus;
     },
     getOffer(state) {
       return state.offer;
@@ -26,6 +30,9 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
+    setBonus(state, bonus) {
+      state.bonus = bonus;
+    },
     getFunds(state) {
       return axios.get('/api/wallet/index')
         .then(({ data }) => {
@@ -127,6 +134,13 @@ const store = new Vuex.Store({
           commit('resetTicket');
           commit('findOrCreate');
           dispatch('updateFunds', bet.funds);
+        });
+    },
+    getBonus(dispatch, ticketId) {
+      return axios.get(`/api/ticket/getBonus?TicketId=${ticketId}`)
+        .then(response => {
+          console.log(response.data);
+          return response.data;
         });
     },
     getOffer({ commit }, sport) {

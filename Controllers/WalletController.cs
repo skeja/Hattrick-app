@@ -22,8 +22,8 @@ namespace hattrick_full.Controllers
         [HttpPut("[action]")]
         public IActionResult UpdateFunds([FromBody]int funds)
         {
-            walletProvider.UpdateFunds(funds);
-            return Ok();
+            var result = walletProvider.UpdateFunds(funds);
+            return Ok(result);
         }
     }
 }

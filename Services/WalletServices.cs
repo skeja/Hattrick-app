@@ -24,10 +24,10 @@ namespace hattrick_full.Services
                 .FirstOrDefault();
 
             if (entity != null) {
-                entity.Funds = funds;
+                entity.Funds -= funds;
                 _context.SaveChanges();
             }
-            return 1;
+            return entity.Funds;
         }
     }
 }

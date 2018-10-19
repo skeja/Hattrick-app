@@ -28,6 +28,13 @@ namespace hattrick_full.Controllers
             return Ok(ticket);
         }
 
+        [HttpGet("[action]")]
+        public IActionResult GetBetted()
+        {
+            var ticket = ticketProvider.GetBetted();
+            return Ok(ticket);
+        }
+
         [HttpPost("[action]")]
         public IActionResult Create([FromBody]Ticket newTicket)
         {

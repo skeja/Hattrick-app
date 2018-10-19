@@ -7,6 +7,7 @@ namespace hattrick_full.Providers
     {
         Ticket GetLast();
         List<Ticket_Game> GetByTicketId(int id);
+        List<Ticket_Game> GetBetted();
         int Add(Ticket newTicket);
         int UpdateTicket(Ticket ticket);
         int AddGame(Ticket_Game newGame);

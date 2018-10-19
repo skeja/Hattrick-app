@@ -57,6 +57,9 @@ const store = new Vuex.Store({
     addOffer(state, offer) {
       state.offer.push(offer);
     },
+    addBetted(state, tickets) {
+      state.tickets = tickets;
+    },
     resetTicket(state) {
       state.ticket = [];
     },
@@ -109,7 +112,6 @@ const store = new Vuex.Store({
       commit('findOrCreate');
     },
     updateFunds({ commit }, funds) {
-      debugger;
       return axios.put('/api/wallet/updateFunds', funds)
         .then(response => {
           commit('getFunds');
@@ -129,28 +131,27 @@ const store = new Vuex.Store({
         odd: bet.odd,
         isBetted: true
       };
-      debugger;
       return axios.put('/api/ticket/updateTicket', ticket)
         .then(response => {
           commit('resetTicket');
           commit('findOrCreate');
-          debugger;
           dispatch('updateFunds', bet.stake);
-          debugger;
         });
     },
     getBonus({ commit }, ticketId) {
       return axios.get(`/api/ticket/getBonus?TicketId=${ticketId}`)
         .then(response => {
-          debugger;
           commit('setBonus', response.data);
-          return response.data;
         });
     },
     getOffer({ commit }, sport) {
       // get offer from db
       axios.get('/api/offer/index')
         .then(response => commit('addOffer', response.data));
+    },
+    getBetted({ commit }) {
+      return axios.get('/api/ticket/getBetted')
+        .then(response => commit('addBetted', response.data));
     },
     addToTicket({ commit, getters }, bet) {
       const ticket = getters.getTicket;
@@ -169,10 +170,11 @@ const store = new Vuex.Store({
           });
       }
     },
-    removeFromTicket({ commit }, game) {
+    removeFromTicket({ dispatch, commit }, game) {
       return axios.delete(`/api/ticket/delete/${game.TicketId}/${game.GameId}`)
         .then(response => {
           commit('findOrCreate');
+          dispatch('getBonus', game.TicketId);
         })
         .catch(err => console.log(err));
     }

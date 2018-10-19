@@ -38,6 +38,14 @@ namespace hattrick_full.Services
             .Where(tg => tg.TicketId == TicketId)
             .ToList();
         }
+        public List<Ticket_Game> GetBetted()
+        {
+             return _context.Ticket_Games
+             .Include(tg => tg.Game)
+             .Include(tg => tg.Ticket)
+             .Where(tg => tg.Ticket.IsBetted == true)
+             .ToList();
+        }
         public Ticket GetLast()
         {
             return _context.Tickets
@@ -53,6 +61,7 @@ namespace hattrick_full.Services
 
             if (entity != null) {
                 _context.Ticket_Games.Remove(entity);
+                UpdateTicket(new Ticket{ Id = TicketId });
                 _context.SaveChanges();
             }
         }

@@ -68,7 +68,6 @@ const store = new Vuex.Store({
     },
     addGameToTicket(state, bet) {
       const indexOnTicket = state.ticket.games.findIndex(e => e.gameId === bet.GameId);
-      debugger;
       if (indexOnTicket === -1) {
         return axios.post('/api/ticket/add', bet)
           .then(response => {
@@ -80,17 +79,12 @@ const store = new Vuex.Store({
         return axios.put('/api/ticket/updateGame', bet)
           .then(res => {
             console.log(res.data);
-            debugger;
           });
       }
     },
     removeGameFromTicket(state, game) {
-      console.log(game);
-      debugger;
       return axios.delete(`/api/ticket/delete/${game.TicketId}/${game.GameId}`)
         .then(response => {
-          console.log(response);
-          debugger;
         })
         .catch(err => console.log(err));
     },
@@ -129,18 +123,26 @@ const store = new Vuex.Store({
       axios.get('/api/offer/index')
         .then(response => commit('addOffer', response.data));
     },
-    addToTicket({ commit }, bet) {
-      console.log(bet);
-      commit('addGameToTicket', bet);
+    addToTicket({ commit, getters }, bet) {
+      const ticket = getters.getTicket;
+      const indexOnTicket = ticket.games.findIndex(e => e.gameId === bet.GameId);
+      if (indexOnTicket === -1) {
+        return axios.post('/api/ticket/add', bet)
+          .then(response => {
+            commit('findOrCreate');
+          })
+          .catch(err => console.log(err));
+      } else {
+        // update par na ticket_game
+        return axios.put('/api/ticket/updateGame', bet)
+          .then(res => {
+            commit('findOrCreate');
+          });
+      }
     },
     removeFromTicket({ commit }, game) {
-      // commit('removeGameFromTicket', game);
-      console.log(game);
-      debugger;
       return axios.delete(`/api/ticket/delete/${game.TicketId}/${game.GameId}`)
         .then(response => {
-          console.log(response);
-          debugger;
           commit('findOrCreate');
         })
         .catch(err => console.log(err));

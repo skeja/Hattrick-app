@@ -17,5 +17,17 @@ namespace hattrick_full.Services
             return _context.Wallets
                 .FirstOrDefault();
         }
+
+        public int UpdateFunds(int funds)
+        {
+            var entity = _context.Wallets
+                .FirstOrDefault();
+
+            if (entity != null) {
+                entity.Funds = funds;
+                _context.SaveChanges();
+            }
+            return 1;
+        }
     }
 }

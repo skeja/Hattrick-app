@@ -18,5 +18,12 @@ namespace hattrick_full.Controllers
             var result = walletProvider.GetFunds();
             return Ok(result);
         }
+
+        [HttpPut("[action]")]
+        public IActionResult UpdateFunds([FromBody]int funds)
+        {
+            walletProvider.UpdateFunds(funds);
+            return Ok();
+        }
     }
 }

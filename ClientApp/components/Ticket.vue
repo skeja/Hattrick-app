@@ -53,7 +53,6 @@ export default {
       return this.$store.getters.getTicket;
     },
     odd() {
-      // return this.$store.getters.getOdd;
       const ticket = this.$store.getters.getTicket;
       let odd = 0;
       ticket.games.forEach(e => {
@@ -64,7 +63,7 @@ export default {
   },
   methods: {
     placeBet() {
-      this.$store.dispatch('placeBet', { ticket: this.ticket, stake: this.stake });
+      this.$store.dispatch('placeBet', { ticket: this.ticket, stake: this.stake, odd: this.odd });
     },
     remove(game) {
       const ticket = {
@@ -77,10 +76,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.ticket-bet {
-
-}
-</style>
-

@@ -74,6 +74,8 @@ namespace hattrick_full.Services
             var entity = _context.Tickets.FirstOrDefault(item => item.Id == ticket.Id);
             // update ticket
             entity.IsBetted = ticket.IsBetted;
+            entity.Stake = ticket.Stake;
+            entity.Odd = ticket.Odd;
             entity.BonusId = GetBonusId(entity.Id);
             _context.SaveChanges();
             return 1;

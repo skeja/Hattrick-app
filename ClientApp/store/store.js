@@ -1,24 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
-
 import axios from 'axios';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  // plugins: [createPersistedState({
-  //   reducer: (persistedState => {
-  //     const stateFilter = Object.assign({}, persistedState);
-  //     const blackList = ['offer'];
-  //     blackList.forEach(item => {
-  //       delete stateFilter[item];
-  //     });
-  //     return stateFilter;
-  //   })
-  // })],
   state: {
-    // get funds from base
     funds: 0,
     offer: [],
     ticket: {},
@@ -46,6 +33,7 @@ const store = new Vuex.Store({
         });
     },
     finishTicket(state, bet) {
+      debugger;
       if ((state.funds -= bet) < 0) {
         return 'Funds low!!';
       }
@@ -60,11 +48,11 @@ const store = new Vuex.Store({
           console.log(response.data);
         });
     },
-    resetTicket(state) {
-      state.ticket = [];
-    },
     addOffer(state, offer) {
       state.offer.push(offer);
+    },
+    resetTicket(state) {
+      state.ticket = [];
     },
     addGameToTicket(state, bet) {
       const indexOnTicket = state.ticket.games.findIndex(e => e.gameId === bet.GameId);
@@ -114,9 +102,32 @@ const store = new Vuex.Store({
     findOrCreateTicket({ commit }) {
       commit('findOrCreate');
     },
-    placeBet({ commit }, bet) {
-      commit('finishTicket', bet);
-      // commit('resetTicket');
+    updateFunds(dispatch, funds) {
+      return axios.put('/api/wallet/updateFunds', funds)
+        .then(response => {
+          debugger;
+        });
+    },
+    placeBet({ dispatch, commit, getters }, bet) {
+      // commit('finishTicket', bet);
+      let funds = getters.getFunds;
+      debugger;
+      if ((funds -= bet) < 0) {
+        return 'Funds low!!';
+      }
+      // update ticket in db
+      const ticket = {
+        id: bet.ticket.id,
+        stake: bet.stake,
+        odd: bet.odd,
+        isBetted: true
+      };
+      return axios.put('/api/ticket/updateTicket', ticket)
+        .then(response => {
+          commit('resetTicket');
+          commit('findOrCreate');
+          dispatch('updateFunds', bet.funds);
+        });
     },
     getOffer({ commit }, sport) {
       // get offer from db

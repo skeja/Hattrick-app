@@ -66,8 +66,13 @@ export default {
     placeBet() {
       this.$store.dispatch('placeBet', { ticket: this.ticket, stake: this.stake });
     },
-    remove(id) {
-      this.$store.dispatch('removeFromTicket', id);
+    remove(game) {
+      const ticket = {
+        TicketId: game.ticketId,
+        GameId: game.gameId,
+        Type: game.type
+      };
+      this.$store.dispatch('removeFromTicket', ticket);
     }
   }
 };

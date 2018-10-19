@@ -75,9 +75,9 @@ export default {
     },
     addGame(data, bet) {
       const pair = {
-        ticketId: this.$store.getters.getTicket.id,
-        gameId: data.id,
-        type: bet
+        TicketId: this.$store.getters.getTicket.id,
+        GameId: data.id,
+        Type: bet
       };
       this.$store.dispatch('addToTicket', pair);
     }

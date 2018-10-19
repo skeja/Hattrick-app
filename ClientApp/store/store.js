@@ -67,7 +67,7 @@ const store = new Vuex.Store({
       state.offer.push(offer);
     },
     addGameToTicket(state, bet) {
-      const indexOnTicket = state.ticket.games.findIndex(e => e.gameId === bet.gameId);
+      const indexOnTicket = state.ticket.games.findIndex(e => e.gameId === bet.GameId);
       debugger;
       if (indexOnTicket === -1) {
         return axios.post('/api/ticket/add', bet)
@@ -86,11 +86,13 @@ const store = new Vuex.Store({
     },
     removeGameFromTicket(state, game) {
       console.log(game);
-      return axios.delete('/api/icket/deleteGame', game)
+      debugger;
+      return axios.delete('/api/ticket/delete', game)
         .then(response => {
           console.log(response);
           debugger;
-        });
+        })
+        .catch(err => console.log(err));
     },
     findOrCreate(state, payload) {
       axios.get('/api/ticket/last')

@@ -13,6 +13,7 @@ namespace hattrick_full.Services
         {
             _context = context;
         }
+
         public int Add(Ticket newTicket)
         {
             _context.Tickets.Add(newTicket);
@@ -45,14 +46,16 @@ namespace hattrick_full.Services
             var entity = _context.Ticket_Games
             .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
 
-            _context.Ticket_Games.Remove(entity);
+            if (entity != null) {
+                _context.Ticket_Games.Remove(entity);
+            }
         }
 
         public void UpdateGame(Ticket_Game game)
         {
             var entity = _context.Ticket_Games
             .FirstOrDefault(tg => tg.TicketId == game.TicketId && tg.GameId == game.GameId);
-            entity.GameId = game.GameId;
+            entity.Type = game.Type;
             _context.SaveChanges();
         }
 
@@ -64,5 +67,20 @@ namespace hattrick_full.Services
             _context.SaveChanges();
             return 1;
         }
+
+        public bool HasGamesFromSameSport(int ticketId, int gamesNumber)
+        {
+            return _context.Ticket_Games
+            .Where(tg => tg.TicketId == ticketId)
+            .GroupBy(tg => tg.Game.League.SportId)
+            .Any(sGroup => sGroup.Count() >= gamesNumber);
+        }
+
+        public int SportsCount(int ticketId) {
+        	return _context.Ticket_Games
+		    .Where(tg => tg.TicketId == ticketId)
+		    .GroupBy(tg => tg.Game.League.SportId)
+		    .Count();
+}
     }
 }

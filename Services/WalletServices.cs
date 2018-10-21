@@ -18,13 +18,13 @@ namespace hattrick_full.Services
                 .FirstOrDefault();
         }
 
-        public int UpdateFunds(int funds)
+        public int UpdateFunds(int stake)
         {
             var entity = _context.Wallets
                 .FirstOrDefault();
 
             if (entity != null) {
-                entity.Funds -= funds;
+                entity.Funds -= stake;
                 _context.SaveChanges();
             }
             return entity.Funds;

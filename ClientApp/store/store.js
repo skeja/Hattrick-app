@@ -39,6 +39,9 @@ const store = new Vuex.Store({
           state.funds = data.funds;
         });
     },
+    setFunds(state, funds) {
+      state.funds = funds;
+    },
     finishTicket(state, bet) {
       if ((state.funds -= bet) < 0) {
         return 'Funds low!!';
@@ -61,7 +64,7 @@ const store = new Vuex.Store({
       state.tickets = tickets;
     },
     resetTicket(state) {
-      state.ticket = [];
+      state.ticket = {};
     },
     addGameToTicket(state, bet) {
       const indexOnTicket = state.ticket.games.findIndex(e => e.gameId === bet.GameId);
@@ -85,8 +88,14 @@ const store = new Vuex.Store({
         })
         .catch(err => console.log(err));
     },
+    addTicket(state, id) {
+      state.ticket.id = id;
+    },
+    addTicketGames(state, games) {
+      state.ticket.games = games;
+    },
     findOrCreate(state, payload) {
-      axios.get('/api/ticket/last')
+      return axios.get('/api/ticket/last')
         .then(({ data }) => {
           state.ticket.id = data.id;
           if (data !== '') {
@@ -109,12 +118,36 @@ const store = new Vuex.Store({
   },
   actions: {
     findOrCreateTicket({ commit }) {
-      commit('findOrCreate');
+      // return commit('findOrCreate');
+      return axios.get('/api/ticket/last')
+        .then(({ data }) => {
+          commit('addTicket', data.id);
+          if (data !== '') {
+            return axios.get(`/api/ticket/find?Id=${data.id}`)
+              .then(res => {
+                // state.ticket.games = res.data;
+                commit('addTicketGames', res.data);
+              })
+              .catch(err => console.log(err));
+          }
+          const ticket = {
+            isBetted: false,
+            bonusId: 3
+          };
+          axios.post('/api/ticket/create', ticket)
+            .then(response => {
+              commit('addTicket', response.data);
+            });
+        });
     },
-    updateFunds({ commit }, funds) {
-      return axios.put('/api/wallet/updateFunds', funds)
+    updateFunds({ commit }, stake) {
+      return axios.put(`/api/wallet/updateFunds/${stake}`)
         .then(response => {
-          commit('getFunds');
+          // commit('getFunds');
+          return axios.get('/api/wallet/index')
+            .then(({ data }) => {
+              commit('setFunds', data.funds);
+            });
         })
         .catch(err => console.log(err));
     },
@@ -134,7 +167,8 @@ const store = new Vuex.Store({
       return axios.put('/api/ticket/updateTicket', ticket)
         .then(response => {
           commit('resetTicket');
-          commit('findOrCreate');
+          // commit('findOrCreate');
+          dispatch('findOrCreateTicket');
           dispatch('updateFunds', bet.stake);
         });
     },
@@ -146,7 +180,7 @@ const store = new Vuex.Store({
     },
     getOffer({ commit }, sport) {
       // get offer from db
-      axios.get('/api/offer/index')
+      return axios.get('/api/offer/index')
         .then(response => commit('addOffer', response.data));
     },
     getBetted({ commit }) {

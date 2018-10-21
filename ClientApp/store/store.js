@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import { groupBy, map } from 'lodash-es';
 
 Vue.use(Vuex);
 
@@ -185,7 +186,19 @@ const store = new Vuex.Store({
     },
     getBetted({ commit }) {
       return axios.get('/api/ticket/getBetted')
-        .then(response => commit('addBetted', response.data));
+        .then(response => {
+          const tickets = groupBy(response.data, e => e.ticketId);
+          const sortedTickets = [];
+          map(tickets, item => {
+            const ticket = {
+              games: item,
+              odd: item[0].ticket.odd,
+              stake: item[0].ticket.stake
+            };
+            sortedTickets.push(ticket);
+          });
+          commit('addBetted', tickets);
+        });
     },
     addToTicket({ commit, getters }, bet) {
       const ticket = getters.getTicket;

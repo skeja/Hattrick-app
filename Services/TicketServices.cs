@@ -20,7 +20,7 @@ namespace hattrick_full.Services
         {
             _context.Tickets.Add(newTicket);
             _context.SaveChanges();
-            return 1;
+            return newTicket.Id;
         }
 
         public int AddGame(Ticket_Game newGame)

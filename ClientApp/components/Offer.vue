@@ -1,5 +1,6 @@
 <template>
   <div class="container container-top">
+    <loader v-if="showLoader"></loader>
     <div class="center">
       <table v-for="(sport, index) in offer[0]" :key="index" class="table">
         <div class="sport">
@@ -36,14 +37,16 @@
 <script>
 import { groupBy, forEach } from 'lodash-es';
 import Ticket from './Ticket.vue';
+import Loader from './common/Loader.vue';
 
 export default {
   components: {
-    Ticket
+    Ticket,
+    Loader
   },
   data() {
     return {
-
+      showLoader: true
     };
   },
   computed: {
@@ -67,7 +70,10 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('getOffer');
+    this.$store.dispatch('getOffer')
+      .then(() => {
+        this.showLoader = false;
+      });
   },
   methods: {
     viewTicket() {

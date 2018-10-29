@@ -19,10 +19,10 @@ namespace hattrick_full.Controllers
             return Ok(result);
         }
 
-        [HttpPut("[action]")]
-        public IActionResult UpdateFunds([FromBody]int funds)
+        [HttpPut("[action]/{stake:int}")]
+        public IActionResult UpdateFunds(int stake)
         {
-            var result = walletProvider.UpdateFunds(funds);
+            var result = walletProvider.UpdateFunds(stake);
             return Ok(result);
         }
     }

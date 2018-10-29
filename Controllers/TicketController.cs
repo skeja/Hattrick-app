@@ -31,15 +31,15 @@ namespace hattrick_full.Controllers
         [HttpGet("[action]")]
         public IActionResult GetBetted()
         {
-            var ticket = ticketProvider.GetBetted();
-            return Ok(ticket);
+            var tickets = ticketProvider.GetBetted();
+            return Ok(tickets);
         }
 
         [HttpPost("[action]")]
         public IActionResult Create([FromBody]Ticket newTicket)
         {
-            ticketProvider.Add(newTicket);
-            return Ok();
+            var ticketId = ticketProvider.Add(newTicket);
+            return Ok(ticketId);
         }
 
         [HttpPost("[action]")]

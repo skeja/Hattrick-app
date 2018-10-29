@@ -1,7 +1,7 @@
 <template>
   <div class="container container-top">
     <loader v-if="showLoader"></loader>
-    <div class="center">
+    <div v-else class="center">
       <table v-for="(sport, index) in offer[0]" :key="index" class="table">
         <div class="sport">
           {{ index }}

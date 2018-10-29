@@ -1,7 +1,7 @@
 <template>
   <div class="container container-top">
     <loader v-if="showLoader"></loader>
-    <div class="center">
+    <div v-else class="center">
       <div v-if="ticket.length === 0" class="name warrning">
         Ticket is empty
       </div>

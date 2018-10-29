@@ -1,7 +1,7 @@
 <template>
   <div class="container container-top">
     <loader v-if="showLoader"></loader>
-    <div class="center">
+    <div v-else class="center">
       <div v-if="tickets.length === 0 " class="name warrning">
         No tickets
       </div>
@@ -43,16 +43,11 @@ export default {
   computed: {
     tickets() {
       const tickets = this.$store.getters.getTickets;
-      const sortedTickets = [];
-      map(tickets, item => {
-        const ticket = {
-          games: item,
-          odd: item[0].ticket.odd,
-          stake: item[0].ticket.stake
-        };
-        sortedTickets.push(ticket);
-      });
-      return sortedTickets;
+      return map(tickets, item => ({
+        games: item,
+        odd: item[0].ticket.odd,
+        stake: item[0].ticket.stake
+      }));
     }
   },
   created() {

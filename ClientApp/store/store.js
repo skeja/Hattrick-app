@@ -93,7 +93,7 @@ const store = new Vuex.Store({
       state.ticket.id = id;
     },
     addTicketGames(state, games) {
-      state.ticket.games = games;
+      Vue.set(state.ticket, 'games', games);
     },
     findOrCreate(state, payload) {
       return axios.get('/api/ticket/last')
@@ -200,20 +200,20 @@ const store = new Vuex.Store({
           commit('addBetted', tickets);
         });
     },
-    addToTicket({ commit, getters }, bet) {
+    addToTicket({ dispatch, commit, getters }, bet) {
       const ticket = getters.getTicket;
       const indexOnTicket = ticket.games.findIndex(e => e.gameId === bet.GameId);
       if (indexOnTicket === -1) {
         return axios.post('/api/ticket/add', bet)
           .then(response => {
-            commit('findOrCreate');
+            dispatch('findOrCreateTicket');
           })
           .catch(err => console.log(err));
       } else {
         // update par na ticket_game
         return axios.put('/api/ticket/updateGame', bet)
           .then(res => {
-            commit('findOrCreate');
+            dispatch('findOrCreateTicket');
           });
       }
     },

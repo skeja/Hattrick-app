@@ -45,7 +45,7 @@ const store = new Vuex.Store({
     },
     finishTicket(state, bet) {
       if ((state.funds -= bet) < 0) {
-        return 'Funds low!!';
+        return console.log('Funds low!!');
       }
       // update ticket in db
       const ticket = {
@@ -155,8 +155,8 @@ const store = new Vuex.Store({
     placeBet({ dispatch, commit, getters }, bet) {
       // commit('finishTicket', bet);
       let funds = getters.getFunds;
-      if ((funds -= bet) < 0) {
-        return 'Funds low!!';
+      if ((funds -= bet.stake) < 0) {
+        return console.log('Funds low!!');
       }
       // update ticket in db
       const ticket = {
